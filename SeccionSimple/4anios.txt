@@ -1,0 +1,3 @@
+Sol,Velasquez,17
+Camila,Luque,17
+Maria,Cruz,18

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
-using namespace std;
+#include <iomanip>
+using namespace std;\
+//HERENCIA SIMPLE
 /**
 class Vehiculo{
     static int contador;
@@ -90,18 +92,88 @@ public:
 };
 */
 
+//SOBRECARGA
+/**
+class Grado{//360*00'00
+public:
+    Grado(): grado(0),minuto(0),segundo(0){};
+    Grado(int grado,int minuto,int segundo){
+        this->grado=grado%360;
+        this->minuto=minuto;
+        this->segundo=segundo;
+    }
+    void imprimir(){
+        cout<<setw(3)<<grado<<"*";
+        cout<<setfill('0')<<setw(2)<<minuto<<"'";
+        cout<<setfill('0')<<setw(2)<<segundo<<"\"";
+    }
+    int grado,minuto,segundo;
+};
+
+Grado operator+(const Grado uno, const Grado dos){
+    Grado tmp;
+    tmp.segundo=uno.segundo+dos.segundo;
+    if (tmp.segundo>=60){
+        tmp.minuto+=(tmp.segundo/60);
+        tmp.segundo%=60;
+    }
+    tmp.minuto+=uno.minuto+dos.minuto;
+    if (tmp.minuto>=60){
+        tmp.grado+=(tmp.minuto/60);
+        tmp.minuto%=60;
+    }
+    tmp.grado+=uno.grado+dos.grado;
+    if (tmp.grado>=360) tmp.grado%=360;
+    return tmp;
+}
+Grado operator>(const Grado a,const Grado b){
+    if (a.grado>b.grado) return a;
+    else if (a.grado==b.grado)
+        if (a.minuto>b.minuto) return a;
+        else if (a.minuto==b.minuto&&a.segundo>b.segundo) return a;
+    return b;
+}
+
+ostream& operator<<(ostream &output,const Grado &o){
+    output<<setw(3)<<o.grado<<"*";
+    output<<setfill('0')<<setw(2)<<o.minuto<<"'";
+    output<<setfill('0')<<setw(2)<<o.segundo<<"\"";
+    return output;
+}
+*/
 
 /**
 TODO LIST
 Memoria dinamica
 Array dinamico de algo
 Static vs dinamic cast
-sobrecarga
-templates
 archivos?
 enum
 */
-
+//TEMPLATES
+/**
+template <typename T>
+float suma(T x,T y){
+    return x+y;
+}
+*/
+//CLASES AMIGAS
+/**
+class A{
+    friend class B;
+private:
+    static void imprimir(){cout<<"A"<<endl;}
+    int x=1;
+public:
+    void printB();
+};
+class B{
+public:
+    static void yas(){A::imprimir();}
+    friend void A::printB();
+};
+void A::printB(){cout<<(A::x)<<endl;}
+*/
 
 int main()
 {
@@ -127,8 +199,16 @@ int main()
 */
     //cout<<" entero: "<<sizeof(int)<<" flotante: "<<sizeof(float)<<" cadena: "<<sizeof(string)<<" caracter: "<<sizeof(char);
     //cout<<" booleano: "<<sizeof(bool)<<" long: "<<sizeof(long)<<" long long: "<<sizeof(long long);
-
-
-    cout << "Hello world!" << endl;
+/*SOBRECARGA
+    Grado agudo={63,20,4},obtuso={63,20,0};
+    cout << (agudo+obtuso) << endl;
+    cout << (agudo>obtuso) << endl;
+    */
+    /*cout<<suma <int> (1,2);*/
+    //B::yas();
+    int *ptr=new int;
+    *ptr=5;
+    cout<<*ptr<<endl;
+    delete ptr;
     return 0;
 }
